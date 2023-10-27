@@ -10,6 +10,7 @@ def scrape_images(age, amount):
     if amount == 0:
         return
     query = 'photo of a ' + str(age) + ' year old face'
+    response = simple_image_download.simple_image_download()
     response.download(keywords=query, limit=amount)
     d = os.path.join(Path(__file__).parent.absolute(), 'simple_images', query)
     newname = os.path.join(Path(__file__).parent.absolute(), 'simple_images', str(age))
@@ -42,4 +43,12 @@ def data_scraping(amount_vector):
     for subdir in sd:
         for filename in os.listdir(subdir):
             extract_face(os.path.join(subdir, filename))
-            
+
+
+if __name__ == '__main__':
+	age = 25
+	amount = 12
+	
+	scrape_images(age, amount)
+	for photo in os.listdir(os.path.join('simple_images', str(age))):
+		extract_face(os.path.join('simple_images', str(age), photo))
