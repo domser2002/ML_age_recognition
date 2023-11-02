@@ -3,3 +3,6 @@ __pycache__
 simple_images
 exploratory-data-analysis
 venv
+yolo
+face_recognition
+face_detection/camera_test.py
