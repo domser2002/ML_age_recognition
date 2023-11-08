@@ -13,3 +13,10 @@ face_recognition
 simple_image_download
 bing_image_downloader
 ```
+
+wrinkles.py
+```
+numpy
+Pillow
+opencv_python
+```
