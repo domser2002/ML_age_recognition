@@ -1,3 +1,6 @@
+from age_detection import AgeDetector
+from recognition import FaceRecognizer
+
 class DataReader:
     def __init__(self,option):
         match option:

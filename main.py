@@ -1,4 +1,3 @@
-from recognition import FaceRecongnizer
 from read_data import DataReader
 
 print("Possible options:")

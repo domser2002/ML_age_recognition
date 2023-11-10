@@ -6,3 +6,4 @@ venv
 yolo
 face_recognition
 face_detection/camera_test.py
+testenv
