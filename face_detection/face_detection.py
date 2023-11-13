@@ -3,15 +3,13 @@ import torch
 import numpy as np
 import pandas as pd
 import cv2
-import onnx
 
 class Detector:
-
 	# path argument specifies path to .onnx file
 	def __init__(self, path=None):
 		if path is None:
 			path = os.path.join('models', 'best_nano_1.onnx')
-		# load models/path model
+		# load models/best_1.pt model
 		self.model = torch.hub.load('ultralytics/yolov5', 'custom', path=path, force_reload=True)
 	
 	# returns bounding boxes of faces in an img
@@ -36,6 +34,7 @@ def example():
 	img = cv2.imread('workers.jpg')
 	
 	# resize image
+	# this step is not necessary
 	img = cv2.resize(img, (int(img.shape[0] / 3), 500))
 	
 	# make new detector
