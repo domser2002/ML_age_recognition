@@ -5,10 +5,13 @@ import pandas as pd
 import cv2
 
 class Detector:
-	
-	def __init__(self):
-		# load models/best_1.pt model
-		self.model = torch.hub.load('ultralytics/yolov5', 'custom', path=os.path.join('models', 'best_1.pt'), force_reload=True)
+
+	# path argument specifies path to .onnx file
+	def __init__(self, path=None):
+		if path is None:
+			path = os.path.join('models', 'best_nano_1.onnx')
+		# load models/path model
+		self.model = torch.hub.load('ultralytics/yolov5', 'custom', path=path, force_reload=True)
 	
 	# returns bounding boxes of faces in an img
 	def predict(self, img):
