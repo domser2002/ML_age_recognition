@@ -1,7 +1,9 @@
 from age_detection import AgeDetector
+from face_detection.face_detection import Detector
 from recognition import FaceRecognizer
 import os
 import json
+import cv2
 
 class DataReader:
     def __init__(self,option):
@@ -49,7 +51,75 @@ class DataReader:
         return
     def read_video(self):
         print("reading from video")
+
+        print("Input video file path:")
+        path = input()
+        print("Output video file path (video file in .mp4 format)")
+        output_path = input()
+
+        # get video and information about input video
+        vid = cv2.VideoCapture(path)
+        fps = vid.get(cv2.CAP_PROP_FPS)
+        ret, frame = vid.read()
+        height, width, layers = frame.shape
+
+        # create output video
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        output_video = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
+
+        path = os.path.join('face_detection', 'models', 'best_nano_1.onnx')
+        # make new detector
+        detector = Detector(path)
+
+        while (True):
+            ret, frame = vid.read()
+            if ret:
+                # get bounding boxes
+                boxes = detector.predict(frame)
+
+                # apply boxes to image
+                img_boxes = Detector.draw_bounding_boxes(frame, boxes)
+
+                # write img_boxes image to output video
+                output_video.write(img_boxes)
+            else:
+                break
+
+        output_video.release()
+        vid.release()
+        cv2.destroyAllWindows()
         return
     def read_camera(self):
         print("reading from camera")
+
+        vid = cv2.VideoCapture(0)
+
+        path = os.path.join('face_detection', 'models', 'best_nano_1.onnx')
+        # make new detector
+        detector = Detector(path)
+
+        while (True):
+            # Capture the video frame
+            # by frame
+            ret, frame = vid.read()
+
+            # get bounding boxes
+            boxes = detector.predict(frame)
+
+            # apply boxes to image
+            img_boxes = Detector.draw_bounding_boxes(frame, boxes)
+
+            # Display the resulting frame
+            cv2.imshow('frame', img_boxes)
+
+            # the 'q' button is set as the
+            # quitting button you may use any
+            # desired button of your choice
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+        # After the loop release the cap object
+        vid.release()
+        # Destroy all the windows
+        cv2.destroyAllWindows()
         return
