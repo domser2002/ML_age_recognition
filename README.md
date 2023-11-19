@@ -19,4 +19,17 @@ wrinkles.py
 numpy
 Pillow
 opencv_python
+matplotlib
+```
+
+
+recognition.py
+```
+install face_recognition basing on https://github.com/ageitgey/face_recognition
+```
+
+
+drive_info.py
+```
+mega.py (not mega!)
 ```

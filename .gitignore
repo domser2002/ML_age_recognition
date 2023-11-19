@@ -7,6 +7,7 @@ yolo
 face_recognition
 face_detection/camera_test.py
 testenv
+dataset/results
 face_generation
 face_detection/models/*
 !face_detection/models/best_nano_1.onnx
