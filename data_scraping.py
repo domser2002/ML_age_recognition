@@ -114,7 +114,7 @@ def data_scraping(amount_vector):
     d = os.path.join(Path(__file__).parent.absolute(), 'simple_images')
     if not os.path.exists(d):
         os.makedirs(d)
-    for i in range(0, 99):
+    for i in range(0, 100):
         if amount_vector[i] > 0:
             scrape_images(i + 1, amount_vector[i])
             remove_duplicated(os.path.join(d, str(i + 1)))

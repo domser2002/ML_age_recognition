@@ -5,6 +5,9 @@ import numpy
 import os
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+import os
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 
 
 # calculates what % of image is covered by edges on average in files located in "path"
@@ -26,7 +29,7 @@ def wrinkles_histogram(data):
         axis.set_major_locator(ticker.MaxNLocator(integer=True))
     plt.bar(numpy.array(list(range(1, len(data) + 1))), numpy.array(data))
     plt.ylim(0, 100)
-    plt.title('Średnia gęstość krawędzi na zdjęciach z poszczególnych grup wiekowych')
-    plt.xlabel('Wiek')
-    plt.ylabel('Procent pokrycia obrazu przez krawędzie')
+    plt.title('Average density of edges within images of people from different age groups')
+    plt.xlabel('Age')
+    plt.ylabel('Percentage of surface covered with edges')
     plt.savefig('rozklad_krawedzie.jpg')
