@@ -13,3 +13,4 @@ face_detection/models/*
 !face_detection/models/best_nano_1.onnx
 dataset/*.zip
 dataset/Images
+dataset/*.jpg
