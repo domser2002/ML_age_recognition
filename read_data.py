@@ -4,6 +4,7 @@ from recognition import FaceRecognizer
 import os
 import json
 import cv2
+import numpy as np
 
 class DataReader:
     def __init__(self,option):
@@ -71,15 +72,27 @@ class DataReader:
         # make new detector
         detector = Detector(path)
 
+        # font
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        # fontScale
+        scale = 1
+        # Blue color in BGR
+        color = (0, 255, 0)
+        # Line thickness of 2 px
+        thickness = 2
+
         while (True):
             ret, frame = vid.read()
             if ret:
                 # get bounding boxes
                 boxes = detector.predict(frame)
-
                 # apply boxes to image
                 img_boxes = Detector.draw_bounding_boxes(frame, boxes)
-
+                for i in range(boxes.shape[0]):
+                    x, y = boxes[i][0], boxes[i][1]
+                    x, y = int(x), int(y)
+                    coords = (x, y)
+                    img_boxes = cv2.putText(img_boxes, 'Age: '+str(AgeDetector.detect_age()), coords, font, scale, color, thickness, cv2.LINE_AA)
                 # write img_boxes image to output video
                 output_video.write(img_boxes)
             else:
@@ -98,6 +111,15 @@ class DataReader:
         # make new detector
         detector = Detector(path)
 
+        # font
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        # fontScale
+        scale = 1
+        # Blue color in BGR
+        color = (0, 255, 0)
+        # Line thickness of 2 px
+        thickness = 2
+
         while (True):
             # Capture the video frame
             # by frame
@@ -108,6 +130,12 @@ class DataReader:
 
             # apply boxes to image
             img_boxes = Detector.draw_bounding_boxes(frame, boxes)
+            for i in range(boxes.shape[0]):
+                x, y = boxes[i][0], boxes[i][1]
+                x, y = int(x), int(y)
+                coords = (x, y)
+                img_boxes = cv2.putText(img_boxes, 'Age: ' + str(AgeDetector.detect_age()), coords, font, scale, color,
+                                        thickness, cv2.LINE_AA)
 
             # Display the resulting frame
             cv2.imshow('frame', img_boxes)
