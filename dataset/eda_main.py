@@ -4,7 +4,9 @@ from histogram import *
 import os
 from pathlib import Path
 
-# integration with jupyter notebook probably here (?)
+lowest_age=86
+highest_age=93
+number_of_age_intervals=highest_age-lowest_age+1
 
 # path to dataset and results
 dataset_path = os.path.join(Path(__file__).parent.absolute().parent.absolute(), 'simple_images')
@@ -19,8 +21,8 @@ if not os.path.exists(age_path):
 # generate wrinkles histogram
 wrinkles_path=os.path.join(results_path,'rozklad_krawedzie.jpg')
 if not os.path.exists(wrinkles_path):
-    wrinkles_data=[0]*101
-    for i in range(0,101):
+    wrinkles_data=[0]*number_of_age_intervals
+    for i in range(lowest_age,highest_age+1):
         path=os.path.join(dataset_path,str(i))
         if os.path.exists(path):
             wrinkles_data[i]=wrinkles(path)
@@ -29,12 +31,16 @@ if not os.path.exists(wrinkles_path):
 
 # generate average pixel color and brightness graph
 brightness_path=os.path.join(results_path,'rozklad_jasnosc.jpg')
-if not os.path.exists(brightness_path):
-    color_data=[0]*101
-    brightness_data=[0]*101
-    for i in range(0,101):
+color_path=os.path.join(results_path,'sredni_kolor.jpg')
+if not os.path.exists(brightness_path) or not os.path.exists(color_path):
+    color_data=[0]*number_of_age_intervals
+    brightness_data=[0]*number_of_age_intervals
+    for i in range(lowest_age,highest_age+1):
         path=os.path.join(dataset_path,str(i))
         if os.path.exists(path):
-            [color_data[i],brightness_data[i]]=average_pixel_color_and_brightness(path)
+            [color_data[i-lowest_age],brightness_data[i-lowest_age]]=average_pixel_color_and_brightness(path)
     histogram(brightness_data,'Średnia jasność pikseli na zdjęciach z poszczególnych grup wiekowych','Wiek',
               'Średnia jasność',brightness_path)
+    print(color_data)
+    draw_average_color_graph(color_data,'results/sredni_kolor.jpg',1000,100)
+# draw_average_color_graph(color_data,'')

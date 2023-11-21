@@ -1,5 +1,5 @@
 import cv2
-from PIL import Image
+from PIL import Image, ImageDraw
 from numpy import asarray
 import numpy
 import os
@@ -34,3 +34,26 @@ def average_pixel_color_and_brightness(path):
     blue=numpy.average(average_blue)
     brightness=numpy.average(average_brightness)
     return [[red,green,blue],brightness]
+
+def draw_average_color_graph(colors,filename,width,height):
+    n=len(colors)
+    image = Image.new("RGB", (width, height), "white")
+    draw = ImageDraw.Draw(image)
+    for i in range(n - 1):
+        color1 = colors[i]
+        color2 = colors[i + 1]
+        if not isinstance(color1,list) or len(color1)!=3 or not isinstance(color2,list) or len(color2)!=3:
+            print(color1)
+            print(color2)
+            print("Not a color!")
+            return
+        x_start = int((width / len(colors)) * i)
+        x_end = int((width / len(colors)) * (i + 1))
+        color1=(int(color1[0]),int(color1[1]),int(color1[2]))
+        color2=(int(color2[0]),int(color2[1]),int(color2[2]))
+        draw.rectangle([(x_start, 0), (x_end, height)], fill=color1)
+        draw.rectangle([(x_end, 0), (x_end + 1, height)], fill=color2)
+    if not os.path.exists(filename):
+        open(filename,'w')
+    image.save(filename)
+    return
