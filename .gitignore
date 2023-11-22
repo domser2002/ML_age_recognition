@@ -12,5 +12,5 @@ face_generation
 face_detection/models/*
 !face_detection/models/best_nano_1.onnx
 dataset/*.zip
-dataset/Images
+dataset/Images*
 dataset/*.jpg
