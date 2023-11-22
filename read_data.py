@@ -36,20 +36,39 @@ class DataReader:
         extension1 = ".png"
         extension2 = ".jpg"
 
+        path = os.path.join('face_detection', 'models', 'best_nano_1.onnx')
+        # make new detector
+        detector = Detector(path)
+
+        # font
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        # fontScale
+        scale = 1
+        # Blue color in BGR
+        color = (0, 255, 0)
+        # Line thickness of 2 px
+        thickness = 2
+
         # Create a metadata array and fill it with important data
         metadata = {}
-        for filename in os.listdir(target):
+        targets = os.listdir(target)
+        for filename in targets:
             if filename.endswith(extension1) or filename.endswith(extension2):
-                metadata[filename] = {
-                    "label": 0,  # Modify this as needed
-                    # Add any more relevant data to save to the json file
-                }
-
-        # Save metadata array as a json file
-        with open("pictures_metadata.json", 'w') as metadata_file:
-                json.dump(metadata, metadata_file, indent=4)
+                img = cv2.imread(os.path.join(target, filename))
+                # get bounding boxes
+                boxes = detector.predict(img)
+                # apply boxes to image
+                img_boxes = Detector.draw_bounding_boxes(img, boxes)
+                for i in range(boxes.shape[0]):
+                    x, y = boxes[i][0], boxes[i][1]
+                    x, y = int(x), int(y)
+                    coords = (x, y)
+                    img_boxes = cv2.putText(img_boxes, 'Age: '+str(AgeDetector.detect_age()), coords, font, scale, color, thickness, cv2.LINE_AA)
+                cv2.imwrite(os.path.join(target, f'boxes_{filename}'), img_boxes)
 
         return
+    
+
     def read_video(self):
         print("reading from video")
 
