@@ -11,6 +11,3 @@ def gaussian_noise(path,output_path, mean=0, stddev=180):
     cv2.randn(noise, mean, stddev)
     noisy_img = cv2.add(img, noise)
     cv2.imwrite(output_path, noisy_img)
-
-gaussian_noise("/home/domser/studia/semestr5/ML/dlib/repo/dataset/noise/test.jpg",
-               "/home/domser/studia/semestr5/ML/dlib/repo/dataset/noise/Gaussian.jpg")
