@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import os
 
 def gaussian_noise(path,output_path, mean=0, stddev=180):
     img = cv2.imread(path)
