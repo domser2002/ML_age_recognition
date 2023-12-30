@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-def quantization_noise(path, output_path, levels=16):
+def quantization_noise(path, output_path, levels=64):
     img = cv2.imread(path)
     if img is None:
         print(f"Error: Unable to load the image at {path}")
