@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-def salt_and_pepper_noise(path,output_path, amount=0.02):
+def salt_and_pepper_noise(path,output_path, amount=0.05):
     img = cv2.imread(path)
     if img is None:
         print(f"Error: Unable to load the image at {path}")
@@ -12,4 +12,3 @@ def salt_and_pepper_noise(path,output_path, amount=0.02):
     img[salt] = 255
     img[pepper] = 0
     cv2.imwrite(output_path, img)
-    print(f"Noisy image saved at: {output_path}")
