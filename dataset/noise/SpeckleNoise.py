@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-def speckle_noise(path,output_path, variance=0.02):
+def speckle_noise(path,output_path, variance=0.2):
     img = cv2.imread(path)
     if img is None:
         print(f"Error: Unable to load the image at {path}")
