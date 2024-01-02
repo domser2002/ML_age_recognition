@@ -8,6 +8,7 @@ import numpy as np
 
 class DataReader:
     def __init__(self,option):
+        self.age_detector=AgeDetector(os.path.join('age_detection','age_models','resnet_5.pt'))
         match option:
             case '1':
                 self.read_directory()
@@ -61,9 +62,12 @@ class DataReader:
                 img_boxes = Detector.draw_bounding_boxes(img, boxes)
                 for i in range(boxes.shape[0]):
                     x, y = boxes[i][0], boxes[i][1]
+                    x2,y2 = boxes[i][2], boxes[i][3]
                     x, y = int(x), int(y)
+                    x2,y2=int(x2),int(y2)
                     coords = (x, y)
-                    img_boxes = cv2.putText(img_boxes, 'Age: '+str(AgeDetector.detect_age()), coords, font, scale, color, thickness, cv2.LINE_AA)
+                    face = img[x:x2,y:y2]
+                    img_boxes = cv2.putText(img_boxes, 'Age: '+str(self.age_detector.detect_age(face)), coords, font, scale, color, thickness, cv2.LINE_AA)
                 cv2.imwrite(os.path.join(target, f'boxes_{filename}'), img_boxes)
 
         return
@@ -109,9 +113,12 @@ class DataReader:
                 img_boxes = Detector.draw_bounding_boxes(frame, boxes)
                 for i in range(boxes.shape[0]):
                     x, y = boxes[i][0], boxes[i][1]
+                    x2,y2 = boxes[i][2], boxes[i][3]
                     x, y = int(x), int(y)
+                    x2, y2 = int(x2), int(y2)
                     coords = (x, y)
-                    img_boxes = cv2.putText(img_boxes, 'Age: '+str(AgeDetector.detect_age()), coords, font, scale, color, thickness, cv2.LINE_AA)
+                    face=frame[x:x2,y:y2]
+                    img_boxes = cv2.putText(img_boxes, 'Age: '+str(self.age_detector.detect_age(face)), coords, font, scale, color, thickness, cv2.LINE_AA)
                 # write img_boxes image to output video
                 output_video.write(img_boxes)
             else:
@@ -151,14 +158,17 @@ class DataReader:
             img_boxes = Detector.draw_bounding_boxes(frame, boxes)
             for i in range(boxes.shape[0]):
                 x, y = boxes[i][0], boxes[i][1]
+                x2,y2 = boxes[i][2], boxes[i][3]
                 x, y = int(x), int(y)
+                x2, y2 = int(x2), int(y2)
                 coords = (x, y)
-                img_boxes = cv2.putText(img_boxes, 'Age: ' + str(AgeDetector.detect_age()), coords, font, scale, color,
+                face = frame[x:x2,y:y2]
+                img_boxes = cv2.putText(img_boxes, 'Age: ' + str(self.age_detector.detect_age(face)), coords, font, scale, color,
                                         thickness, cv2.LINE_AA)
 
             # Display the resulting frame
             cv2.imshow('frame', img_boxes)
-
+            
             # the 'q' button is set as the
             # quitting button you may use any
             # desired button of your choice
