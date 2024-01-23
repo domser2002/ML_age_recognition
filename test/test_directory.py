@@ -7,11 +7,18 @@ print("- for each image txt file with correct result must be provided")
 print("- naming convension must be like in documentation")
 print("Enter a directory path (relative or absolute):")
 path = input()
-
-if os.path.isabs(path):
-    print("Absolute path provided.")
-else:
-    path = os.path.abspath(path)
-    print(f"Converted relative path to absolute path: {path}")
-
+correct = False
+while correct == False:
+    if not os.path.isabs(path):
+        path = os.path.abspath(path)
+    if not os.path.exists(path):
+        print("Path does not exist!")
+        print("Input correct path:")
+        path = input()
+    elif not os.path.isdir(path):
+        print("Path is not a directory!")
+        print("Input path to a directory:")
+        path = input()
+    else:
+        correct = True
 print(path)
