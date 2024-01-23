@@ -46,6 +46,8 @@ count = len(fnmatch.filter(os.listdir(path), '*.jpg*'))
 print(f"Read {count} jpg files")
 face_detector = Detector(os.path.join("face_detection","models","best_nano_1.onnx"))
 age_detector = AgeDetector()
+face_count = 0
+error = 0
 try:
     with os.scandir(path) as entries:
         for entry in entries:
@@ -65,8 +67,12 @@ try:
                     cut_face = img[x:x2,y:y2]
                     prediction = age_detector.detect_age(cut_face)
                     ages_prediction.append(prediction)
-                print(ages_correct)
-                print(ages_prediction)
-
+                ages_correct.sort()
+                ages_prediction.sort()
+                for i in range(0,len(ages_correct)):
+                    error = error + abs(ages_correct[i]-ages_prediction[i])
+                    face_count = face_count + 1
+    average_error = error / face_count
+    print(f"Average error on this directory is {average_error}")
 except PermissionError:
     print(f"Permission error accessing directory: {path}")
