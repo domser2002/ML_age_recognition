@@ -45,7 +45,7 @@ def select_directory():
                 x, y = int(x), int(y)
                 x2, y2 = boxes[i][2], boxes[i][3]
                 x2, y2 = int(x2), int(y2)
-                face = img[x:x2,y:y2]
+                face=img[y:y2,x:x2]
                 coords = (x, y)
                 img_boxes = cv2.putText(img_boxes, 'Age: ' + str(age_detector.detect_age(face)), coords, font, scale, color,
                                         thickness, cv2.LINE_AA)
@@ -253,7 +253,7 @@ def open_camera():
 
 
 # GUI
-age_detector=AgeDetector(os.path.join('age_detection','age_models','resnet_5.pt'))
+age_detector=AgeDetector(os.path.join('age_detection','age_models','inception3.onnx'))
 root = tk.Tk()
 root.title("Age recognition")
 root.minsize(800, 600)
