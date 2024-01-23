@@ -1,5 +1,10 @@
+import sys
 import os
+sys.path.append(os.path.abspath('.'))
 import fnmatch
+from age_detection import AgeDetector
+from face_detection.face_detection import Detector
+import cv2
 
 print("********TEST AGE DETECTION ON DIRECTORY**********")
 print("Requirments:")
@@ -39,6 +44,8 @@ if leave == False:
             correct = True
 count = len(fnmatch.filter(os.listdir(path), '*.jpg*'))
 print(f"Read {count} jpg files")
+face_detector = Detector(os.path.join("face_detection","models","best_nano_1.onnx"))
+age_detector = AgeDetector()
 try:
     with os.scandir(path) as entries:
         for entry in entries:
@@ -46,7 +53,20 @@ try:
                 txtfile = os.path.join(path,os.path.basename(entry.name).rsplit('.', 1)[0] + '_correct.txt')
                 print(txtfile)
                 with open(txtfile, 'r') as file:
-                    array = [int(line.strip()) for line in file]
-                print(array)
+                    ages_correct = [int(line.strip()) for line in file]
+                img = cv2.imread(entry.path)
+                faces = face_detector.predict(img)
+                ages_prediction = []
+                for face in faces:
+                    x, y = face[0], face[1]
+                    x2,y2 = face[2], face[3]
+                    x, y = int(x), int(y)
+                    x2,y2=int(x2),int(y2)
+                    cut_face = img[x:x2,y:y2]
+                    prediction = age_detector.detect_age(cut_face)
+                    ages_prediction.append(prediction)
+                print(ages_correct)
+                print(ages_prediction)
+
 except PermissionError:
     print(f"Permission error accessing directory: {path}")
