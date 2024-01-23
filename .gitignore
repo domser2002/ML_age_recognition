@@ -14,3 +14,5 @@ face_detection/models/*
 dataset/*.zip
 dataset/Images*
 dataset/*.jpg
+test.ipynb
+Lenna.png
