@@ -1,4 +1,5 @@
 import os
+import fnmatch
 
 print("********TEST AGE DETECTION ON DIRECTORY**********")
 print("Requirments:")
@@ -21,4 +22,5 @@ while correct == False:
         path = input()
     else:
         correct = True
-print(path)
+count = len(fnmatch.filter(os.listdir(path), '*.jpg*'))
+print(f"Read {count} jpg files")
