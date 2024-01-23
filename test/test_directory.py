@@ -43,7 +43,10 @@ try:
     with os.scandir(path) as entries:
         for entry in entries:
             if entry.is_file() and entry.name.lower().endswith('.jpg'):
-                txtfile = os.path.basename(entry.name).rsplit('.', 1)[0] + '_correct.txt'
+                txtfile = os.path.join(path,os.path.basename(entry.name).rsplit('.', 1)[0] + '_correct.txt')
                 print(txtfile)
+                with open(txtfile, 'r') as file:
+                    array = [int(line.strip()) for line in file]
+                print(array)
 except PermissionError:
     print(f"Permission error accessing directory: {path}")
