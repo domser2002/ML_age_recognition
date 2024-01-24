@@ -45,7 +45,7 @@ if leave == False:
 count = len(fnmatch.filter(os.listdir(path), '*.jpg*'))
 print(f"Read {count} jpg files")
 face_detector = Detector(os.path.join("face_detection","models","best_nano_1.onnx"))
-age_detector = AgeDetector()
+age_detector = AgeDetector(os.path.join('age_detection','age_models','inception3.onnx'))
 face_count = 0
 error = 0
 try:
@@ -64,11 +64,13 @@ try:
                     x2,y2 = face[2], face[3]
                     x, y = int(x), int(y)
                     x2,y2=int(x2),int(y2)
-                    cut_face = img[x:x2,y:y2]
+                    cut_face = img[y:y2,x:x2]
                     prediction = age_detector.detect_age(cut_face)
                     ages_prediction.append(prediction)
                 ages_correct.sort()
                 ages_prediction.sort()
+                print(ages_correct)
+                print(ages_prediction)
                 for i in range(0,len(ages_correct)):
                     error = error + abs(ages_correct[i]-ages_prediction[i])
                     face_count = face_count + 1
